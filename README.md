@@ -22,5 +22,3 @@ to recover.
 - Drawdown depth and recovery duration capture distinct dimensions of risk.
 
 
-
-Add README with figures and project summary
