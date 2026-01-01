@@ -1,0 +1,2 @@
+ticker,horizon_days,n_sims,p01_max_drawdown,p05_max_drawdown,p50_max_drawdown
+SPY,1260,10000,-0.07080875354813657,-0.05621596094301629,-0.02888613171981469
