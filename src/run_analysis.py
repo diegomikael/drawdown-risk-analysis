@@ -3,9 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
-from src.data import DEFAULT_TICKERS, fetch_adj_close
+from src.data import fetch_adj_close
 from src.risk import compute_drawdown, extract_drawdown_events
 from src.simulation import monte_carlo_drawdowns, monte_carlo_paths
 
@@ -21,7 +22,7 @@ def summarize_events(all_events: pd.DataFrame) -> pd.DataFrame:
     summary = pd.DataFrame(
         {
             "n_events": g.size(),
-            "worst_depth": g["depth"].min(),                 # most negative
+            "worst_depth": g["depth"].min(),  # most negative
             "avg_depth": g["depth"].mean(),
             "longest_total_days": g["total_days"].max(),
             "avg_total_days": g["total_days"].mean(),
@@ -110,6 +111,42 @@ def plot_mc_maxdd_hist(
     )
 
 
+def plot_mc_paths(
+    prices: pd.Series,
+    ticker: str,
+    horizon_days: int,
+    n_sims: int,
+    n_plot: int,
+    seed: int | None,
+    outpath: Path,
+) -> None:
+    """Plot a sample of Monte Carlo simulated price paths (trajectory risk)."""
+    paths = monte_carlo_paths(
+        prices=prices,
+        n_sims=n_sims,
+        horizon_days=horizon_days,
+        seed=seed,
+    )
+
+    plt.figure(figsize=(12, 6))
+
+    # Plot only a subset so the chart isn't a spaghetti explosion
+    n_plot = min(n_plot, paths.shape[1])
+    plt.plot(paths[:, :n_plot], alpha=0.25)
+
+    # Overlay median path for a cleaner reference
+    median_path = np.median(paths, axis=1)
+    plt.plot(median_path, linewidth=2, label="Median path")
+
+    plt.title(f"Monte Carlo {horizon_days/252:.0f}Y Simulated Paths ({ticker})")
+    plt.xlabel("Trading days")
+    plt.ylabel("Price")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(outpath, dpi=150)
+    plt.close()
+
+
 def main() -> None:
     FIG_DIR.mkdir(exist_ok=True)
     OUT_DIR.mkdir(exist_ok=True)
@@ -120,14 +157,13 @@ def main() -> None:
     # 2) Extract drawdown events for each ticker
     events_list: list[pd.DataFrame] = []
     for ticker in prices.columns:
-        ev = extract_drawdown_events(prices[ticker])
-        ev = ev.copy()
+        ev = extract_drawdown_events(prices[ticker]).copy()
         ev["ticker"] = ticker
         events_list.append(ev)
 
     all_events = pd.concat(events_list, ignore_index=True)
 
-    # Keep only events that actually recovered (your function sets recovered=True for those)
+    # Keep only events that actually recovered
     if "recovered" in all_events.columns:
         all_events = all_events[all_events["recovered"] == True].copy()
 
@@ -143,6 +179,7 @@ def main() -> None:
 
     # 5) Monte Carlo (SPY by default)
     spy = prices["SPY"].dropna()
+
     mc_tail = plot_mc_maxdd_hist(
         prices=spy,
         ticker="SPY",
@@ -152,6 +189,16 @@ def main() -> None:
         outpath=FIG_DIR / "mc_maxdd_dist_SPY.png",
     )
     mc_tail.to_csv(OUT_DIR / "mc_tail_SPY.csv", index=False)
+
+    plot_mc_paths(
+        prices=spy,
+        ticker="SPY",
+        horizon_days=252 * 5,
+        n_sims=10_000,
+        n_plot=75,
+        seed=42,
+        outpath=FIG_DIR / "mc_paths_SPY.png",
+    )
 
     print("Done.")
     print(f"Figures saved to: {FIG_DIR}/")

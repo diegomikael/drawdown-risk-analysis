@@ -40,6 +40,10 @@ Daily adjusted close prices are sourced from Yahoo Finance for the following ETF
 ### Monte Carlo 5Y Max Drawdown Distribution (SPY)
 ![Monte Carlo Max DD](figures/mc_maxdd_dist_SPY.png)
 
+### Monte Carlo 5Y Simulated Paths (SPY)
+![Monte Carlo Paths](figures/mc_paths_SPY.png)
+
+
 ## Key Findings
 
 - Deeper drawdowns tend to exhibit longer recovery horizons, though the relationship is nonlinear.
