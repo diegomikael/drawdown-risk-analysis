@@ -1,13 +1,13 @@
 # Drawdown Risk Analysis
 
-This project analyzes **downside risk and recovery dynamics** across major asset classes using a  
+This project analyzes downside risk and recovery dynamics across major asset classes using a  
 drawdown-centric framework.
 
 Rather than relying on volatility, Sharpe ratios, or return moments, the analysis decomposes price  
-series into **peak–trough–recovery events**, explicitly modeling **loss magnitude**, **loss duration**,  
-and **time spent underwater**.
+series into peak–trough–recovery events, explicitly modeling loss magnitude**, **loss duration,  
+and time spent underwater.
 
-The objective is to quantify **tail risk, persistence, and path dependence** in a way traditional  
+The objective is to quantify tail risk, persistence, and path dependence in a way traditional  
 return-based metrics fail to capture.
 
 ---
@@ -25,7 +25,7 @@ For each event, the following risk characteristics are extracted:
 - **Trough-to-recovery duration** (recovery friction)
 - **Total drawdown length** (time underwater)
 
-This event-based framework separates **magnitude risk** from **temporal risk**, two dimensions  
+This event-based framework separates magnitude risk from temporal risk, two dimensions  
 that are largely orthogonal but equally relevant for portfolio construction and risk budgeting.
 
 ---
@@ -64,7 +64,7 @@ particularly during systemic stress regimes.
 ![Monte Carlo Max DD](figures/mc_maxdd_dist_SPY.png)
 
 Using geometric Brownian motion calibrated to historical returns, Monte Carlo simulations estimate  
-the distribution of **future maximum drawdowns** over a five-year horizon.
+the distribution of future maximum drawdowns over a five-year horizon.
 
 Reported tail metrics include:
 
@@ -77,7 +77,7 @@ These quantities provide a probabilistic view of downside risk rather than a sin
 ### Monte Carlo 5Y Simulated Paths (SPY)
 ![Monte Carlo Paths](figures/mc_paths_SPY.png)
 
-Simulated price trajectories illustrate **path risk**: even when terminal returns are acceptable,  
+Simulated price trajectories illustrate path risk: even when terminal returns are acceptable,  
 intermediate drawdowns can be severe and prolonged.
 
 ---
@@ -87,7 +87,7 @@ intermediate drawdowns can be severe and prolonged.
 - Deeper drawdowns are associated with disproportionately longer recovery times.
 - Small-cap equities exhibit the most extreme downside tail risk.
 - Bonds and gold experience shallower drawdowns but materially longer recovery durations.
-- Drawdown depth and recovery time capture **distinct risk dimensions** not reflected in volatility.
+- Drawdown depth and recovery time capture distinct risk dimensions not reflected in volatility.
 - Monte Carlo simulations highlight the prevalence of large interim losses even under benign return assumptions.
 
 ---
@@ -97,5 +97,5 @@ intermediate drawdowns can be severe and prolonged.
 Monte Carlo simulations using geometric Brownian motion are employed to estimate future drawdown  
 distributions conditional on historical dynamics.
 
-This provides a **forward-looking, distributional view of downside risk**, complementing the  
+This provides a forward-looking, distributional view of downside risk, complementing the  
 historical event-based analysis.
