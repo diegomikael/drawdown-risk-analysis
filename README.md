@@ -4,7 +4,7 @@ This project analyzes downside risk and recovery dynamics across major asset cla
 drawdown-centric framework.
 
 Rather than relying on volatility, Sharpe ratios, or return moments, the analysis decomposes price  
-series into peak–trough–recovery events, explicitly modeling loss magnitude**, **loss duration,  
+series into peak–trough–recovery events, explicitly modeling loss magnitude, loss duration,  
 and time spent underwater.
 
 The objective is to quantify tail risk, persistence, and path dependence in a way traditional  
